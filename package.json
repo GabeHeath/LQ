@@ -1,10 +1,42 @@
 {
-  "name": "loaded-questions-app",
-  "version": "0.0.1",
-  "dependencies": [],
+  "name": "LQ",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node index.js",
+    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js  --recursive",
+    "test:watch": "npm run test -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabeHeath/LQ.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GabeHeath/LQ/issues"
+  },
+  "homepage": "https://github.com/GabeHeath/LQ#readme",
   "devDependencies": {
-    "express": "^4.15.2",
-    "http": "0.0.0",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "chai": "^3.5.0",
+    "chai-immutable": "^1.6.0",
+    "mocha": "^3.3.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "immutable": "^3.8.1",
+    "redux": "^3.6.0",
     "socket.io": "^1.7.3"
   }
 }
