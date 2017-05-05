@@ -11,7 +11,8 @@ describe('reducer', () => {
     const nextState = reducer(initialState, action);
 
     expect(nextState).to.equal(fromJS({
-      entries: ['Jurassic Park']
+      entries: ['Jurassic Park'],
+      initialEntries: ['Jurassic Park']
     }));
   });
 
@@ -23,10 +24,11 @@ describe('reducer', () => {
     const nextState = reducer(initialState, action);
 
     expect(nextState).to.equal(fromJS({
+      entries: [],
       vote: {
+        round: 1,
         pair: ['Jurassic Park', 'Lost World']
-      },
-      entries: []
+      }
     }));
   });
 
@@ -53,7 +55,8 @@ describe('reducer', () => {
     const action = {type: 'SET_ENTRIES', entries: List.of('Jurassic Park')};
     const nextState = reducer(undefined, action);
     expect(nextState).to.equal(fromJS({
-      entries: ['Jurassic Park']
+      entries: ['Jurassic Park'],
+      initialEntries: ['Jurassic Park']
     }));
   });
 
@@ -69,7 +72,8 @@ describe('reducer', () => {
   const finalState = actions.reduce(reducer, Map());
 
   expect(finalState).to.equal(fromJS({
-    winner: 'Jurassic Park'
+    winner: 'Jurassic Park',
+    initialEntries: ['Jurassic Park', 'Lost World']
   }));
 });
 

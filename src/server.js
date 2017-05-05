@@ -1,7 +1,7 @@
 import Server from 'socket.io';
 
-export default function startServer() {
-  const io = new Server().attach(3000);
+export default function startServer(store) {
+  const io = new Server().attach(8090);
 
   // We are now publishing the whole state to everyone whenever any changes occur. 
   // This may end up causing a lot of data transfer. 

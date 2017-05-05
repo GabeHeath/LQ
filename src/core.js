@@ -1,22 +1,37 @@
 import {List, Map} from 'immutable';
 
 export function setEntries(state, entries) {
-  return state.set('entries', entries);
+  const list = List(entries);
+  return state.set('entries', list)
+  .set('initialEntries', list);
 }
 
-export function next(state) {
+export function next(state, round = state.getIn(['vote', 'round'], 0)) {
   const entries = state.get('entries')
-                       .concat(getWinners(state.get('vote')));
+  .concat(getWinners(state.get('vote')));
   if (entries.size === 1) {
     return state.remove('vote')
-                .remove('entries')
-                .set('winner', entries.first());
+    .remove('entries')
+    .set('winner', entries.first());
   } else {
     return state.merge({
-      vote: Map({pair: entries.take(2)}),
-      entries: entries.skip(2)
+      vote: Map({
+        round: round + 1,
+        pair: entries.slice(0,2)
+      }),
+      entries: entries.slice(2)
     });
   }
+}
+
+export function restart(state) {
+ const round = state.getIn(['vote', 'round'], 0);
+ return next(
+   state.set('entries', state.get('initialEntries'))
+   .remove('vote')
+   .remove('winner'),
+   round
+   );
 }
 
 // What the code expresses is "reach into the nested data structure path
@@ -28,7 +43,7 @@ export function vote(voteState, entry) {
     ['tally', entry],
     0,
     tally => tally + 1
-  );
+    );
 }
 
 function getWinners(vote) {

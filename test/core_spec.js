@@ -1,7 +1,7 @@
 import {List, Map} from 'immutable';
 import {expect} from 'chai';
 
-import {setEntries, next, vote} from '../src/core';
+import {setEntries, next, vote, restart} from '../src/core';
 
 describe('application logic', () => {
 
@@ -12,7 +12,8 @@ describe('application logic', () => {
       const entries = List.of('Jurassic Park', 'Lost World');
       const nextState = setEntries(state, entries);
       expect(nextState).to.equal(Map({
-        entries: List.of('Jurassic Park', 'Lost World')
+        entries: List.of('Jurassic Park', 'Lost World'),
+        initialEntries: List.of('Jurassic Park', 'Lost World')
       }));
     });
 
@@ -21,7 +22,8 @@ describe('application logic', () => {
       const entries = List.of('Jurassic Park', 'Lost World');
       const nextState = setEntries(state, entries);
       expect(nextState).to.equal(Map({
-        entries: List.of('Jurassic Park', 'Lost World')
+        entries: List.of('Jurassic Park', 'Lost World'),
+        initialEntries: List.of('Jurassic Park', 'Lost World')
       }));
     });
 
@@ -39,6 +41,7 @@ describe('application logic', () => {
       expect(nextState).to.equal(Map({
         entries: List.of('Jurassic Park III'),
         vote: Map({
+          round: 1,
           pair: List.of('Jurassic Park', 'Lost World')
         })
       }));
@@ -101,6 +104,7 @@ describe('application logic', () => {
       const nextState = next(state);
       expect(nextState).to.equal(Map({
         vote: Map({
+          round: 1,
           pair: List.of('Jurassic Park III', 'Jurassic World')
         }),
         entries: List.of('Jurassic World 2', 'Jurassic Park')
@@ -121,6 +125,7 @@ describe('application logic', () => {
       const nextState = next(state);
       expect(nextState).to.equal(Map({
         vote: Map({
+          round: 1,
           pair: List.of('Jurassic Park III', 'Jurassic World')
         }),
         entries: List.of('Jurassic World 2', 'Jurassic Park', 'Lost World')
@@ -144,6 +149,34 @@ describe('application logic', () => {
       }));
     });
 
+  });
+
+
+
+  describe('restart', () => {
+ 
+    it('returns to initial entries and takes the first two entries under vote', () => {
+      expect(
+        restart(Map({
+          vote: Map({
+            round: 1,
+            pair: List.of('Jurassic Park', 'Jurassic Park III')
+          }),
+          entries: List(),
+          initialEntries: List.of('Jurassic Park', 'Lost World', 'Jurassic Park III')
+        }))
+      ).to.equal(
+        Map({
+          vote: Map({
+            round: 2,
+            pair: List.of('Jurassic Park', 'Lost World')
+          }),
+          entries: List.of('Jurassic Park III'),
+          initialEntries: List.of('Jurassic Park', 'Lost World', 'Jurassic Park III')
+        })
+      );
+    });
+ 
   });
 
 });
